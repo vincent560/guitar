@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Guitar TAB Only</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.3.0/dist/alphaTab.min.css">
+</head>
+
+<body>
+
+  <div id="alphaTab"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.3.0/dist/alphaTab.min.js"></script>
+  <script>
+    const alphaTex = `
+\\tuning (E2 A2 D3 G3 B3 E4)
+\\tempo 90
+\\ts (4 4)
+
+(3.5 2.4 0.3 1.2 0.1).4 \\strum down "C"
+`;
+
+    const api = new alphaTab.AlphaTabApi(
+      document.getElementById("alphaTab"),
+      {
+        core: {
+          fontDirectory:
+            "https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.3.0/dist/font/",
+          useWorkers: false
+        },
+        display: {
+          staveProfile: alphaTab.StaveProfile.Tablature
+        }
+      }
+    );
+
+    api.tex(alphaTex);
+  </script>
+
+</body>
+
+</html>
