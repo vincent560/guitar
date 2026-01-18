@@ -21,19 +21,46 @@ const INITIAL_SCORE = `\\staff{tabs}
 type Note = { string: number; fret: number };
 
 // 和弦庫定義
+// 為了閱讀清楚，我加上了註解說明是哪種按法
 const CHORD_LIBRARY: Record<string, Note[]> = {
+  // === C Major Family ===
   'C':     [{string:5, fret:3}, {string:4, fret:2}, {string:2, fret:1}, {string:3, fret:0}, {string:1, fret:0}],
-  'D':     [{string:3, fret:2}, {string:1, fret:2}, {string:2, fret:3}, {string:4, fret:0}],
-  'E':     [{string:5, fret:2}, {string:4, fret:2}, {string:3, fret:1}, {string:6, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
+  'Cmaj7': [{string:5, fret:3}, {string:4, fret:2}, {string:3, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
+  'Am':    [{string:4, fret:2}, {string:3, fret:2}, {string:2, fret:1}, {string:5, fret:0}, {string:1, fret:0}],
   'F':     [{string:6, fret:1}, {string:5, fret:3}, {string:4, fret:3}, {string:3, fret:2}, {string:2, fret:1}, {string:1, fret:1}],
   'G':     [{string:6, fret:3}, {string:5, fret:2}, {string:1, fret:3}, {string:2, fret:0}, {string:3, fret:0}, {string:4, fret:0}],
-  'A':     [{string:4, fret:2}, {string:3, fret:2}, {string:2, fret:2}, {string:5, fret:0}, {string:1, fret:0}],
-  'Am':    [{string:4, fret:2}, {string:3, fret:2}, {string:2, fret:1}, {string:5, fret:0}, {string:1, fret:0}],
-  'Em':    [{string:5, fret:2}, {string:4, fret:2}, {string:6, fret:0}, {string:3, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
-  'Dm':    [{string:3, fret:2}, {string:2, fret:3}, {string:1, fret:1}, {string:4, fret:0}],
-  'Cmaj7': [{string:5, fret:3}, {string:4, fret:2}, {string:3, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
   'G7':    [{string:6, fret:3}, {string:5, fret:2}, {string:4, fret:0}, {string:3, fret:0}, {string:2, fret:0}, {string:1, fret:1}],
+
+  // === D Major / G Major Essentials ===
+  'D':     [{string:3, fret:2}, {string:1, fret:2}, {string:2, fret:3}, {string:4, fret:0}],
+  'Dm':    [{string:3, fret:2}, {string:2, fret:3}, {string:1, fret:1}, {string:4, fret:0}],
+  'D7':    [{string:3, fret:2}, {string:1, fret:2}, {string:2, fret:1}, {string:4, fret:0}],
+  'Em':    [{string:5, fret:2}, {string:4, fret:2}, {string:6, fret:0}, {string:3, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
+  'E':     [{string:5, fret:2}, {string:4, fret:2}, {string:3, fret:1}, {string:6, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
   'E7':    [{string:5, fret:2}, {string:4, fret:0}, {string:3, fret:1}, {string:6, fret:0}, {string:2, fret:0}, {string:1, fret:0}],
+
+  // === A Major Family ===
+  'A':     [{string:4, fret:2}, {string:3, fret:2}, {string:2, fret:2}, {string:5, fret:0}, {string:1, fret:0}],
+  'A7':    [{string:4, fret:2}, {string:2, fret:2}, {string:3, fret:0}, {string:5, fret:0}, {string:1, fret:0}],
+  'F#m':   [{string:6, fret:2}, {string:5, fret:4}, {string:4, fret:4}, {string:3, fret:2}, {string:2, fret:2}, {string:1, fret:2}], 
+  
+  // === Image Extracts (新加入的特殊指法) ===
+  // 圖片中的開放式 Bm7 (聽起來比封閉更開闊)
+  'Bm7':   [{string:5, fret:2}, {string:4, fret:0}, {string:3, fret:2}, {string:2, fret:0}, {string:1, fret:2}],
+  
+  // 圖片中的 Dadd9 (實際上接近 Dsus2，非常適合流行歌前奏)
+  'Dadd9': [{string:3, fret:2}, {string:2, fret:3}, {string:4, fret:0}, {string:1, fret:0}],
+
+  // 標準 F#m7 封閉指法 (食指橫按2品，無名指按5弦4品)
+  'F#m7':  [{string:6, fret:2}, {string:5, fret:4}, {string:4, fret:2}, {string:3, fret:2}, {string:2, fret:2}, {string:1, fret:2}],
+
+  // === B Family Essentials ===
+  'B':     [{string:5, fret:2}, {string:4, fret:4}, {string:3, fret:4}, {string:2, fret:4}, {string:1, fret:2}], 
+  'Bm':    [{string:5, fret:2}, {string:4, fret:4}, {string:3, fret:4}, {string:2, fret:3}, {string:1, fret:2}], 
+
+  // === Suspended (裝飾音) ===
+  'Dsus4': [{string:3, fret:2}, {string:2, fret:3}, {string:1, fret:3}, {string:4, fret:0}],
+  'Asus4': [{string:4, fret:2}, {string:3, fret:2}, {string:2, fret:3}, {string:5, fret:0}, {string:1, fret:0}],
 };
 
 const Fretboard = ({ onNoteClick, selectedNotes = [] }: { onNoteClick: (string: number, fret: number) => void; selectedNotes?: Note[]; }) => {
@@ -82,6 +109,7 @@ const GuitarTab = () => {
   const [selectedChordName, setSelectedChordName] = useState<string>(""); 
   const [strokeDirection, setStrokeDirection] = useState<'none' | 'down' | 'up'>('none');
   const [duration, setDuration] = useState<string>("4");
+  const [dotCount, setDotCount] = useState<number>(0);
 
   useEffect(() => {
     let apiInstance: any = null;
@@ -168,7 +196,8 @@ const GuitarTab = () => {
       });
       setSelectedChordName(""); 
     } else {
-      insertTextAtCursor(` ${fretNum}.${stringNum}.${duration} `);
+      const effectsSingle = dotCount === 1 ? ` {d}` : dotCount === 2 ? ` {dd}` : "";
+      insertTextAtCursor(` ${fretNum}.${stringNum}.${duration}${effectsSingle} `);
     }
   };
 
@@ -191,6 +220,8 @@ const GuitarTab = () => {
     if (strokeDirection === 'down') properties.push("bd");
     if (strokeDirection === 'up')   properties.push("bu");
     if (safeName && isFirstBeatInBar) properties.push(`txt "${safeName}"`);
+    if (dotCount === 1) properties.push("d");
+    if (dotCount === 2) properties.push("dd");
 
     const effects = properties.length ? ` {${properties.join(' ')}}` : "";
     const fullCode = ` (${notesString}).${duration}${effects} `;
@@ -231,6 +262,12 @@ const GuitarTab = () => {
                 {[1, 2, 4, 8, 16].map((d) => (
                     <button key={d} onClick={() => setDuration(d.toString())} className={`flex-1 py-1 text-xs rounded border transition ${duration === d.toString() ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700 border-slate-300'}`}>1/{d}</button>
                 ))}
+            </div>
+            <div className="flex gap-1">
+                <span className="text-xs font-bold text-slate-500 flex items-center px-1">附點:</span>
+                <button onClick={() => setDotCount(0)} className={`flex-1 py-1 text-xs rounded border transition ${dotCount === 0 ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700 border-slate-300'}`}>無</button>
+                <button onClick={() => setDotCount(1)} className={`flex-1 py-1 text-xs rounded border transition ${dotCount === 1 ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700 border-slate-300'}`}>•</button>
+                <button onClick={() => setDotCount(2)} className={`flex-1 py-1 text-xs rounded border transition ${dotCount === 2 ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700 border-slate-300'}`}>••</button>
             </div>
 
             {isChordMode && (
